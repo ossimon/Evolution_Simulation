@@ -10,10 +10,10 @@ public class SimulationEngine implements Runnable {
     private final App app;
     private final List<Animal> animals = new ArrayList<>();
 
-    public SimulationEngine(IMap map, Vector2d[] positions, App app){
+    public SimulationEngine(WorldMap map, Vector2d[] positions, App app){
         this.app = app;
         for(Vector2d pos: positions){
-            Animal animal = new Animal(map, app, pos);
+            Animal animal = new Animal(map, pos);
             map.place(animal);
             animals.add(animal);
         }

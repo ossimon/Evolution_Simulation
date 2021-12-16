@@ -15,22 +15,21 @@ public class Animal implements IMapElement{
     private Vector2d position;
     private MapDirection direction;
     private ImageView imageView;
-    private IMap map;
+    private WorldMap map;
     private int energy;
     private Genotype genotype;
-    private List<IPositionChangeObserver> observers = new ArrayList<>();
 
-    public Animal(IMap map, App app, Vector2d position) {
+    public Animal(WorldMap map, Vector2d position) {
         this.direction = MapDirection.NORTH;
         this.map = map;
         this.position = position;
         this.genotype = new Genotype();
-        this.addObserver((IPositionChangeObserver) map);
+        System.out.println(genotype.toString());
     }
 
     public void move() {
         Random rng = new Random();
-        int moveIndex = rng.nextInt(31);
+        int moveIndex = rng.nextInt(32);
         int move = genotype.getGenes()[moveIndex];
 
         Vector2d newPosition;
@@ -98,15 +97,7 @@ public class Animal implements IMapElement{
     }
 
     private void positionChanged(Vector2d oldPosition, Vector2d newPosition){
-        for (IPositionChangeObserver observer: observers) {
-            observer.positionChanged(oldPosition, newPosition);
-        }
+        map.positionChanged(oldPosition, newPosition);
     }
 
-    public void addObserver(IPositionChangeObserver observer){
-        observers.add(observer);
-    }
-    public void removeObserver(IPositionChangeObserver observer){
-        observers.remove(observer);
-    }
 }
