@@ -22,22 +22,6 @@ public class Vector2d {
         return this.x >= other.x && this.y >= other.y;
     }
 
-    public Vector2d upperRight(Vector2d other) {
-        int x;
-        int y;
-        x = Math.max(this.x, other.x);
-        y = Math.max(this.y, other.y);
-        return new Vector2d(x, y);
-    }
-
-    public Vector2d lowerLeft(Vector2d other) {
-        int x;
-        int y;
-        x = Math.min(this.x, other.x);
-        y = Math.min(this.y, other.y);
-        return new Vector2d(x, y);
-    }
-
     public Vector2d add(Vector2d other) {
         return new Vector2d(this.x + other.x, this.y + other.y);
     }
@@ -56,6 +40,23 @@ public class Vector2d {
         return this.x == that.x && this.y == that.y;
     }
 
+    public Vector2d within (Vector2d other) {
+        int x = this.x;
+        int y = this.y;
+        if (this.x < 0) {
+            x = other.x;
+        }
+        else if (this.x > other.x) {
+            x = 0;
+        }
+        if (this.y < 0) {
+            y = other.y;
+        }
+        else if (this.y > other.y) {
+            y = 0;
+        }
+        return new Vector2d(x, y);
+    }
 
     @Override
     public int hashCode() {

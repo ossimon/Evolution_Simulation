@@ -19,12 +19,13 @@ public class Animal implements IMapElement{
     private int energy;
     private Genotype genotype;
 
-    public Animal(WorldMap map, Vector2d position) {
+    public Animal(WorldMap map, Vector2d position, int energy) {
         this.direction = MapDirection.NORTH;
         this.map = map;
         this.position = position;
         this.genotype = new Genotype();
-        System.out.println(genotype.toString());
+        System.out.println(genotype);
+        this.energy = energy;
     }
 
     public void move() {
@@ -37,52 +38,53 @@ public class Animal implements IMapElement{
         switch (move) {
             case 0 -> {
                 newPosition = this.position.add(direction.toUnitVector());
-                if (map.canMoveTo(newPosition)) {
+                newPosition = map.resultDestination(position, newPosition);
+                if (this.position != newPosition) {
                     this.positionChanged(position, newPosition);
                     this.position = newPosition;
                 }
             }
-            case 1 -> {
-                direction = direction.next();
-            }
-            case 2 -> {
-                direction = direction.next().next();
-            }
-            case 3 -> {
-                direction = direction.next().next().next();
-            }
+            case 1 -> direction = direction.next();
+            case 2 -> direction = direction.next().next();
+            case 3 -> direction = direction.next().next().next();
             case 4 -> {
                 newPosition = this.position.subtract(direction.toUnitVector());
-                if (map.canMoveTo(newPosition)) {
+                newPosition = map.resultDestination(position, newPosition);
+                if (this.position != newPosition) {
                     this.positionChanged(position, newPosition);
                     this.position = newPosition;
                 }
-            }
-            case 5 -> {
-                direction = direction.previous();
-            }
-            case 6 -> {
-                direction = direction.previous().previous();
-            }
-            case 7 -> {
-                direction = direction.previous().previous().previous();
-            }
+                }
+
+            case 5 -> direction = direction.previous();
+            case 6 -> direction = direction.previous().previous();
+            case 7 -> direction = direction.previous().previous().previous();
         }
-//        System.out.println(position);
+        System.out.println(position);
     }
 
     @Override
     public ImageView getImageView() {
 //        DO POPRAWY !!! MA SIE TWORZYC JEDEN VIEW I MA BYC ZMIENNA KTORA SPRAWDZA,
 //        CZY SIE COS ZMIENILO (JAK NIE TO NIE TWORZYMY NOWEGO)
-
-
         try {
-            Image image = new Image(new FileInputStream("src/main/resources/grass.png"));
+
+            String fileName = switch (this.direction) {
+                case NORTH -> "src/main/resources/up.png";
+                case NORTHWEST -> "src/main/resources/upleft.png";
+                case NORTHEAST -> "src/main/resources/upright.png";
+                case SOUTH -> "src/main/resources/down.png";
+                case SOUTHWEST -> "src/main/resources/downleft.png";
+                case SOUTHEAST -> "src/main/resources/downright.png";
+                case WEST -> "src/main/resources/left.png";
+                case EAST -> "src/main/resources/right.png";
+            };
+
+            Image image = new Image(new FileInputStream(fileName));
             imageView = new ImageView(image);
 
-            imageView.setFitWidth(20);
-            imageView.setFitHeight(20);
+            imageView.setFitWidth(50);
+            imageView.setFitHeight(50);
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -95,9 +97,13 @@ public class Animal implements IMapElement{
     public Vector2d getPosition() {
         return this.position;
     }
+    public boolean exhausted(int exhaustion) {
+        energy -= exhaustion;
+        return energy <= 0;
+    }
 
     private void positionChanged(Vector2d oldPosition, Vector2d newPosition){
-        map.positionChanged(oldPosition, newPosition);
+        map.positionChanged(this, oldPosition, newPosition);
     }
 
 }

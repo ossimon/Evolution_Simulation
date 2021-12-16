@@ -2,6 +2,7 @@ package simulation.gui;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
@@ -9,6 +10,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import simulation.*;
 
 public class App extends Application {
@@ -16,8 +18,8 @@ public class App extends Application {
     private WorldMap map;
     private SimulationEngine engine;
     private GridPane grid;
-    private final int height = 8;
-    private final int width = 10;
+    private final int height = 5;
+    private final int width = 5;
 
 
     @Override
@@ -28,23 +30,30 @@ public class App extends Application {
 
         this.updateScene();
 
-        for (int i = 0; i < width; i++) grid.getColumnConstraints().add(new ColumnConstraints(40));
-        for (int i = 0; i < height; i++) grid.getRowConstraints().add(new RowConstraints(40));
+        for (int i = 0; i < width; i++) grid.getColumnConstraints().add(new ColumnConstraints(50));
+        for (int i = 0; i < height; i++) grid.getRowConstraints().add(new RowConstraints(50));
 
-        Scene scene = new Scene(grid, 800, 600);
+        Scene scene = new Scene(grid, 1200, 800);
 
         primaryStage.setScene(scene);
         primaryStage.show();
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent e) {
+                Platform.exit();
+                System.exit(0);
+            }
+        });
 
         Thread engineThread = new Thread(engine);
         engineThread.start();
     }
+
     @Override
     public void init() {
-
-        map = new WorldMap(10, 8);
-        Vector2d[] positions = {new Vector2d(2, 2), new Vector2d(3, 4)};
-        engine = new SimulationEngine(map, positions, this);
+        map = new WorldMap(width, height, true);
+        Vector2d[] positions = {new Vector2d(2, 2), new Vector2d(2, 2)};
+        engine = new SimulationEngine(map, positions, this, 10);
 
     }
 

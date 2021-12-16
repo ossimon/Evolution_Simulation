@@ -1,41 +1,86 @@
 package simulation;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class WorldMap {
 
 
-    protected int height;
-    protected int width;
-    protected Vector2d boundary1;
-    protected Vector2d boundary2;
-    protected Map<Vector2d, Animal> animals = new HashMap<>();
+    private final Vector2d boundary1;
+    private final Vector2d boundary2;
+    private final boolean teleport;
+    private final Map<Vector2d, List<Animal>> animals = new HashMap<>();
 
-    public WorldMap(int width, int height) {
-        this.width = width;
-        this.height = height;
+    public WorldMap(int width, int height, boolean teleport) {
         boundary1 = new Vector2d(0, 0);
         boundary2 = new Vector2d(width - 1, height - 1);
+        this.teleport = teleport;
+        System.out.println(width);
+        System.out.println(height);
     }
 
-    public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
-        Animal animal = animals.get(oldPosition);
-        animals.remove(oldPosition);
-        animals.put(newPosition, animal);
+    public void positionChanged(Animal animal, Vector2d oldPosition, Vector2d newPosition) {
+        removeAnimal(animal);
+        placeAnimal(animal);
     }
 
-    public boolean canMoveTo (Vector2d position) {
-        return position.follows(boundary1) && position.precedes(boundary2);
+    public Vector2d resultDestination (Vector2d oldPosition, Vector2d newPosition) {
+
+        if (newPosition.follows(boundary1) && newPosition.precedes(boundary2)) {
+            return newPosition;
+        }
+        else if (teleport) {
+            newPosition = newPosition.within(boundary2);
+            return newPosition;
+        }
+        else {
+            return oldPosition;
+        }
     }
 
-    public void place (Animal animal) {
-        Vector2d pos = animal.getPosition();
-        animals.put(pos, animal);
+    public void placeAnimal(Animal animal) {
+        Vector2d position = animal.getPosition();
+
+        if (animals.containsKey(position)) {
+            animals.get(position).add(animal);
+        }
+        else {
+            List<Animal> positions = new ArrayList<>();
+            positions.add(animal);
+            animals.put(position, positions);
+        }
+    }
+
+    public void feedAnimals(int plantEnergy) {
+
+        for (Vector2d position: animals.keySet()) {
+
+        }
     }
 
     public IMapElement objectAt(Vector2d position){
-        return animals.get(position);
+
+        if (animals.containsKey(position) && !animals.get(position).isEmpty()) {
+
+
+            return animals.get(position).get(0);
+        }
+        return null;
+    }
+
+
+    public void removeAnimal(Animal animal) {
+        Vector2d position = animal.getPosition();
+
+        if (animals.containsKey(position)) {
+            animals.get(position).remove(animal);
+
+            if (animals.get(position).isEmpty()) {
+                animals.remove(position);
+            }
+        }
     }
 
 }
