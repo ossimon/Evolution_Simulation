@@ -15,15 +15,8 @@ public class SimulationEngine implements Runnable {
     private int moveEnergy;
 
 
-    public SimulationEngine(WorldMap map, Vector2d[] positions, App app, int moveEnergy){
-        this.map = map;
-        this.app = app;
-        this.moveEnergy = moveEnergy;
-        for(Vector2d pos: positions){
-            Animal animal = new Animal(map, pos, 10);
-            map.placeAnimal(animal);
-            animals.add(animal);
-        }
+    public SimulationEngine(int width, int height, int startEnergy, int moveEnergy, int plantEnergy, int jungleRatio) {
+
     }
 
     public void pause() {
@@ -40,11 +33,12 @@ public class SimulationEngine implements Runnable {
         while (true) {
 
             if (!pause) {
-                removeDeadAnimals();
+//                System.out.println(animals.size());
+//                removeDeadAnimals();
                 moveAnimals();
-                feedAnimals();
-                reproduceAnimals();
-                growPlants();
+//                feedAnimals();
+//                reproduceAnimals();
+//                growPlants();
             }
 
             try {
@@ -56,11 +50,7 @@ public class SimulationEngine implements Runnable {
     }
 
     private void removeDeadAnimals() {
-        for (Animal animal: animals) {
-            if (animal.exhausted(moveEnergy)) {
-                map.removeAnimal(animal);
-            }
-        }
+
     }
 
     private void moveAnimals() {
@@ -70,9 +60,7 @@ public class SimulationEngine implements Runnable {
         app.positionChanged();
     }
     private void feedAnimals() {
-        for(Animal animal: animals) {
 
-        }
     }
     private void reproduceAnimals() {
 

@@ -53,7 +53,7 @@ public class App extends Application {
     public void init() {
         map = new WorldMap(width, height, true);
         Vector2d[] positions = {new Vector2d(2, 2), new Vector2d(2, 2)};
-        engine = new SimulationEngine(map, positions, this, 10);
+        engine = new SimulationEngine(map, positions, this, 10, 150);
 
     }
 

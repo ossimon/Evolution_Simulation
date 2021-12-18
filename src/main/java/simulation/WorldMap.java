@@ -22,8 +22,8 @@ public class WorldMap {
     }
 
     public void positionChanged(Animal animal, Vector2d oldPosition, Vector2d newPosition) {
-        removeAnimal(animal);
-        placeAnimal(animal);
+        removeAnimal(oldPosition, animal);
+        placeAnimal(newPosition, animal);
     }
 
     public Vector2d resultDestination (Vector2d oldPosition, Vector2d newPosition) {
@@ -40,8 +40,7 @@ public class WorldMap {
         }
     }
 
-    public void placeAnimal(Animal animal) {
-        Vector2d position = animal.getPosition();
+    public void placeAnimal(Vector2d position, Animal animal) {
 
         if (animals.containsKey(position)) {
             animals.get(position).add(animal);
@@ -61,7 +60,7 @@ public class WorldMap {
     }
 
     public IMapElement objectAt(Vector2d position){
-
+        System.out.println(animals.size());
         if (animals.containsKey(position) && !animals.get(position).isEmpty()) {
 
 
@@ -71,8 +70,7 @@ public class WorldMap {
     }
 
 
-    public void removeAnimal(Animal animal) {
-        Vector2d position = animal.getPosition();
+    public void removeAnimal(Vector2d position, Animal animal) {
 
         if (animals.containsKey(position)) {
             animals.get(position).remove(animal);
