@@ -15,8 +15,16 @@ public class SimulationEngine implements Runnable {
     private int moveEnergy;
 
 
-    public SimulationEngine(int width, int height, int startEnergy, int moveEnergy, int plantEnergy, int jungleRatio) {
+    public SimulationEngine(WorldMap map, Vector2d[] positions, App app, int moveEnergy){
 
+        this.map = map;
+        this.app = app;
+        this.moveEnergy = moveEnergy;
+        for(Vector2d pos: positions){
+            Animal animal = new Animal(map, pos, 10);
+            map.placeAnimal(animal.getPosition(), animal);
+            animals.add(animal);
+        }
     }
 
     public void pause() {
@@ -33,11 +41,11 @@ public class SimulationEngine implements Runnable {
         while (true) {
 
             if (!pause) {
-//                System.out.println(animals.size());
-//                removeDeadAnimals();
+                System.out.println(animals.size());
+                map.killAnimals(animals);
                 moveAnimals();
 //                feedAnimals();
-//                reproduceAnimals();
+                map.breedAnimals(animals);
 //                growPlants();
             }
 

@@ -1,5 +1,7 @@
 package simulation;
 
+import java.util.Random;
+
 public enum MapDirection {
     NORTH,
     NORTHWEST,
@@ -10,6 +12,23 @@ public enum MapDirection {
     WEST,
     EAST;
 
+    public static MapDirection randomDirection() {
+
+        Random rng = new Random();
+        int dir = rng.nextInt(8);
+
+        return switch (dir) {
+            case 0 -> NORTH;
+            case 1 -> NORTHEAST;
+            case 2 -> NORTHWEST;
+            case 3 -> SOUTH;
+            case 4 -> SOUTHEAST;
+            case 5 -> SOUTHWEST;
+            case 6 -> EAST;
+            case 7 -> WEST;
+            default -> throw new IllegalStateException("Unexpected value: " + dir);
+        };
+    }
     public String toString(){
         return switch (this) {
             case NORTH -> "Północ";

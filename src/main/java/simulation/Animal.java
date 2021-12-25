@@ -20,12 +20,34 @@ public class Animal implements IMapElement{
     private Genotype genotype;
 
     public Animal(WorldMap map, Vector2d position, int energy) {
-        this.direction = MapDirection.NORTH;
+        this.direction = MapDirection.randomDirection();
         this.map = map;
         this.position = position;
         this.genotype = new Genotype();
-        System.out.println(genotype);
+//        System.out.println(genotype);
         this.energy = energy;
+    }
+
+    public Animal(WorldMap map, Vector2d position, Genotype genotype, int energy) {
+        this.direction = MapDirection.randomDirection();
+        this.map = map;
+        this.position = position;
+        this.genotype = genotype;
+//        System.out.println(genotype);
+        this.energy = energy;
+    }
+
+    public Animal copulateWith(Animal other) {
+
+        int parentEnergy1 = (int) (this.energy * 0.25);
+        int parentEnergy2 = (int) (other.energy * 0.25);
+        Genotype childGenotype = new Genotype(parentEnergy1, parentEnergy2, this.genotype, other.genotype);
+
+        Animal child = new Animal(this.map, this.position, childGenotype, parentEnergy1 + parentEnergy2);
+        this.energy -= parentEnergy1;
+        other.energy -= parentEnergy2;
+
+        return child;
     }
 
     public void move() {
@@ -60,7 +82,6 @@ public class Animal implements IMapElement{
             case 6 -> direction = direction.previous().previous();
             case 7 -> direction = direction.previous().previous().previous();
         }
-        System.out.println(position);
     }
 
     @Override
@@ -97,6 +118,11 @@ public class Animal implements IMapElement{
     public Vector2d getPosition() {
         return this.position;
     }
+
+    public int getEnergy() {
+        return this.energy;
+    }
+
     public boolean exhausted(int exhaustion) {
         energy -= exhaustion;
         return energy <= 0;

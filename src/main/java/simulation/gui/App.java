@@ -51,9 +51,18 @@ public class App extends Application {
 
     @Override
     public void init() {
+
+        Genotype gen1 = new Genotype(0);
+        Genotype gen2 = new Genotype(1);
+
+        System.out.println(new Genotype(5, 10, gen1, gen2));
+
         map = new WorldMap(width, height, true);
-        Vector2d[] positions = {new Vector2d(2, 2), new Vector2d(2, 2)};
-        engine = new SimulationEngine(map, positions, this, 10, 150);
+//        Vector2d[] positions = {new Vector2d(2, 2), new Vector2d(2, 2)};
+        Vector2d[] positions =
+                VectorGenerator.generateVectors(new Vector2d(0, 0),
+                        new Vector2d(width - 1, height - 1), 2);
+        engine = new SimulationEngine(map, positions, this, 10);
 
     }
 

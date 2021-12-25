@@ -17,8 +17,6 @@ public class WorldMap {
         boundary1 = new Vector2d(0, 0);
         boundary2 = new Vector2d(width - 1, height - 1);
         this.teleport = teleport;
-        System.out.println(width);
-        System.out.println(height);
     }
 
     public void positionChanged(Animal animal, Vector2d oldPosition, Vector2d newPosition) {
@@ -43,7 +41,16 @@ public class WorldMap {
     public void placeAnimal(Vector2d position, Animal animal) {
 
         if (animals.containsKey(position)) {
-            animals.get(position).add(animal);
+            List<Animal> animalList = animals.get(position);
+            animalList.add(animal);
+            int currentIndex = animalList.size() - 1;
+            while (currentIndex > 0 && animalList.get(currentIndex - 1).getEnergy() < animalList.get(currentIndex).getEnergy()) {
+                Animal animal1 = animalList.get(currentIndex - 1);
+                Animal animal2 = animalList.get(currentIndex - 1);
+                animalList.add(currentIndex - 1, animal2);
+                animalList.add(currentIndex, animal1);
+                currentIndex -= 1;
+            }
         }
         else {
             List<Animal> positions = new ArrayList<>();
@@ -60,7 +67,7 @@ public class WorldMap {
     }
 
     public IMapElement objectAt(Vector2d position){
-        System.out.println(animals.size());
+
         if (animals.containsKey(position) && !animals.get(position).isEmpty()) {
 
 
@@ -81,4 +88,38 @@ public class WorldMap {
         }
     }
 
+    public void breedAnimals(List<Animal> engineAnimals) {
+
+        List<Animal> animalList;
+
+        for (Vector2d pos: animals.keySet()) {
+
+            animalList = animals.get(pos);
+
+            if (animalList.size() > 1) {
+                Animal parent1 = animalList.get(0);
+                Animal parent2 = animalList.get(1);
+                Animal newAnimal = parent1.copulateWith(parent2);
+                this.placeAnimal(pos, newAnimal);
+                engineAnimals.add(newAnimal);
+            }
+        }
+    }
+
+    public void killAnimals(List<Animal> engineAnimals) {
+
+        List<Animal> animalList;
+
+        for (Vector2d pos : animals.keySet()) {
+
+            animalList = animals.get(pos);
+            int i = animalList.size() - 1;
+
+            while (animalList.get(i).getEnergy() <= 0) {
+                engineAnimals.remove(animalList.get(i));
+                animalList.remove(i);
+                i -= 1;
+            }
+        }
+    }
 }

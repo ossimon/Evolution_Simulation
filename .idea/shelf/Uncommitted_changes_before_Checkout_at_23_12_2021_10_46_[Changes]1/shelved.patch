@@ -1,0 +1,30 @@
+Index: src/main/java/simulation/gui/App.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package simulation.gui;\r\n\r\nimport javafx.application.Application;\r\nimport javafx.application.Platform;\r\nimport javafx.event.EventHandler;\r\nimport javafx.geometry.HPos;\r\nimport javafx.scene.Scene;\r\nimport javafx.scene.image.ImageView;\r\nimport javafx.scene.layout.ColumnConstraints;\r\nimport javafx.scene.layout.GridPane;\r\nimport javafx.scene.layout.RowConstraints;\r\nimport javafx.stage.Stage;\r\nimport javafx.stage.WindowEvent;\r\nimport simulation.*;\r\n\r\npublic class App extends Application {\r\n\r\n    private WorldMap map;\r\n    private SimulationEngine engine;\r\n    private GridPane grid;\r\n    private final int height = 5;\r\n    private final int width = 5;\r\n\r\n\r\n    @Override\r\n    public void start(Stage primaryStage){\r\n        primaryStage.setTitle(\"Evolution Simulation\");\r\n\r\n        grid = new GridPane();\r\n\r\n        this.updateScene();\r\n\r\n        for (int i = 0; i < width; i++) grid.getColumnConstraints().add(new ColumnConstraints(50));\r\n        for (int i = 0; i < height; i++) grid.getRowConstraints().add(new RowConstraints(50));\r\n\r\n        Scene scene = new Scene(grid, 1200, 800);\r\n\r\n        primaryStage.setScene(scene);\r\n        primaryStage.show();\r\n        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {\r\n            @Override\r\n            public void handle(WindowEvent e) {\r\n                Platform.exit();\r\n                System.exit(0);\r\n            }\r\n        });\r\n\r\n        Thread engineThread = new Thread(engine);\r\n        engineThread.start();\r\n    }\r\n\r\n    @Override\r\n    public void init() {\r\n        map = new WorldMap(width, height, true);\r\n        Vector2d[] positions = {new Vector2d(2, 2), new Vector2d(2, 2)};\r\n        engine = new SimulationEngine(map, positions, this, 10, 150);\r\n\r\n    }\r\n\r\n    private void updateScene() {\r\n\r\n        grid.setGridLinesVisible(false);\r\n        grid.setGridLinesVisible(true);\r\n\r\n        IMapElement mapElement;\r\n\r\n        for (int i = 0; i < height; i++) {\r\n            for (int j = 0; j < width; j++) {\r\n\r\n                mapElement = map.objectAt(new Vector2d(j, i));\r\n\r\n                if (mapElement != null) {\r\n                    ImageView imageView = mapElement.getImageView();\r\n                    grid.add(imageView, j, i);\r\n                    GridPane.setHalignment(imageView, HPos.CENTER);\r\n                }\r\n            }\r\n        }\r\n    }\r\n\r\n    public void positionChanged() {\r\n\r\n        Platform.runLater(() -> {\r\n//            System.out.println(\"position changed\");\r\n            grid.getChildren().clear();\r\n            this.updateScene();\r\n        });\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/simulation/gui/App.java b/src/main/java/simulation/gui/App.java
+--- a/src/main/java/simulation/gui/App.java	
++++ b/src/main/java/simulation/gui/App.java	
+@@ -18,8 +18,8 @@
+     private WorldMap map;
+     private SimulationEngine engine;
+     private GridPane grid;
+-    private final int height = 5;
+-    private final int width = 5;
++    private final int height = 10;
++    private final int width = 8;
+ 
+ 
+     @Override
+@@ -53,7 +53,7 @@
+     public void init() {
+         map = new WorldMap(width, height, true);
+         Vector2d[] positions = {new Vector2d(2, 2), new Vector2d(2, 2)};
+-        engine = new SimulationEngine(map, positions, this, 10, 150);
++        engine = new SimulationEngine(map, positions, this, 10);
+ 
+     }
+ 
