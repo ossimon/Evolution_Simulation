@@ -15,13 +15,13 @@ public class SimulationEngine implements Runnable {
     private int moveEnergy;
 
 
-    public SimulationEngine(WorldMap map, Vector2d[] positions, App app, int moveEnergy){
+    public SimulationEngine(WorldMap map, Vector2d[] positions, App app, int startEnergy, int moveEnergy){
 
         this.map = map;
         this.app = app;
         this.moveEnergy = moveEnergy;
         for(Vector2d pos: positions){
-            Animal animal = new Animal(map, pos, 10);
+            Animal animal = new Animal(map, pos, startEnergy);
             map.placeAnimal(animal.getPosition(), animal);
             animals.add(animal);
         }
@@ -38,15 +38,15 @@ public class SimulationEngine implements Runnable {
     public void run() {
         int moveDelay = 150;
 
-        while (true) {
+        while (animals.size() > 0) {
 
             if (!pause) {
-                System.out.println(animals.size());
+//                System.out.println(animals.size());
                 map.killAnimals(animals);
                 moveAnimals();
-//                feedAnimals();
+                map.feedAnimals();
                 map.breedAnimals(animals);
-//                growPlants();
+                map.growPlants();
             }
 
             try {
@@ -57,16 +57,13 @@ public class SimulationEngine implements Runnable {
         }
     }
 
-    private void removeDeadAnimals() {
-
-    }
-
     private void moveAnimals() {
         for(Animal animal: animals) {
-            animal.move();
+            animal.move(moveEnergy);
         }
         app.positionChanged();
     }
+
     private void feedAnimals() {
 
     }

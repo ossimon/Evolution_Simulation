@@ -1,19 +1,20 @@
 package simulation;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javafx.scene.image.ImageView;
+
+import java.util.*;
 
 public class WorldMap {
-
 
     private final Vector2d boundary1;
     private final Vector2d boundary2;
     private final boolean teleport;
+    private final int plantEnergy;
     private final Map<Vector2d, List<Animal>> animals = new HashMap<>();
+    private final Map<Vector2d, Plant> plants = new HashMap<>();
 
-    public WorldMap(int width, int height, boolean teleport) {
+    public WorldMap(int width, int height, int plantEnergy, boolean teleport) {
+        this.plantEnergy = plantEnergy;
         boundary1 = new Vector2d(0, 0);
         boundary2 = new Vector2d(width - 1, height - 1);
         this.teleport = teleport;
@@ -59,23 +60,39 @@ public class WorldMap {
         }
     }
 
-    public void feedAnimals(int plantEnergy) {
+    public void growPlants() {
 
-        for (Vector2d position: animals.keySet()) {
+        if (plants.size() < (boundary2.x + 1) * (boundary2.y + 1)) {
+            Random rng = new Random();
+            Vector2d grassPos;
 
+            do {
+                grassPos = new Vector2d(rng.nextInt(boundary2.x + 1), rng.nextInt(boundary2.y + 1));
+            } while (plants.containsKey(grassPos));
+
+            plants.put(grassPos, new Plant(grassPos));
+        }
+        System.out.println(plants.keySet());
+    }
+
+    public void feedAnimals() {
+
+        for (Vector2d position: plants.keySet()) {
+
+            IMapElement object = this.objectAt(position);
+            if (object instanceof Animal) {
+                ((Animal) object).feed(this.plantEnergy);
+            }
         }
     }
 
     public IMapElement objectAt(Vector2d position){
 
         if (animals.containsKey(position) && !animals.get(position).isEmpty()) {
-
-
             return animals.get(position).get(0);
         }
-        return null;
+        return plants.get(position);
     }
-
 
     public void removeAnimal(Vector2d position, Animal animal) {
 

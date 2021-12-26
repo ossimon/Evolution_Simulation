@@ -4,14 +4,17 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import javafx.scene.control.Label;
 import javafx.stage.WindowEvent;
 import simulation.*;
+
+import java.io.FileNotFoundException;
+
 
 public class App extends Application {
 
@@ -20,10 +23,11 @@ public class App extends Application {
     private GridPane grid;
     private final int height = 5;
     private final int width = 5;
+    private int plantEnergy = 1000;
 
 
     @Override
-    public void start(Stage primaryStage){
+    public void start(Stage primaryStage) throws FileNotFoundException {
         primaryStage.setTitle("Evolution Simulation");
 
         grid = new GridPane();
@@ -31,9 +35,13 @@ public class App extends Application {
         this.updateScene();
 
         for (int i = 0; i < width; i++) grid.getColumnConstraints().add(new ColumnConstraints(50));
-        for (int i = 0; i < height; i++) grid.getRowConstraints().add(new RowConstraints(50));
+        for (int i = 0; i < height; i++) grid.getRowConstraints().add(new RowConstraints(60));
 
         Scene scene = new Scene(grid, 1200, 800);
+//        Plant plant = new Plant(new Vector2d(1,1));
+//        ImageView imageView = plant.getImageView();
+//        HBox hBox = new HBox(imageView);
+//        scene = new Scene(hBox, 1200, 800);
 
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -52,17 +60,11 @@ public class App extends Application {
     @Override
     public void init() {
 
-        Genotype gen1 = new Genotype(0);
-        Genotype gen2 = new Genotype(1);
 
-        System.out.println(new Genotype(5, 10, gen1, gen2));
-
-        map = new WorldMap(width, height, true);
-//        Vector2d[] positions = {new Vector2d(2, 2), new Vector2d(2, 2)};
-        Vector2d[] positions =
-                VectorGenerator.generateVectors(new Vector2d(0, 0),
-                        new Vector2d(width - 1, height - 1), 2);
-        engine = new SimulationEngine(map, positions, this, 10);
+        map = new WorldMap(width, height, plantEnergy, true);
+        Vector2d[] positions = VectorGenerator.generateVectors(new Vector2d(0, 0),
+                        new Vector2d(width - 1, height - 1), 1);
+        engine = new SimulationEngine(map, positions, this, 1000, 100);
 
     }
 
@@ -79,10 +81,21 @@ public class App extends Application {
                 mapElement = map.objectAt(new Vector2d(j, i));
 
                 if (mapElement != null) {
+                    Label label;
+                    if (mapElement instanceof Animal) {
+                        label = new Label(Integer.toString(((Animal) mapElement).getEnergy()));
+                    }
+                    else {
+                        label = new Label("");
+                    }
+
                     ImageView imageView = mapElement.getImageView();
-                    grid.add(imageView, j, i);
-                    GridPane.setHalignment(imageView, HPos.CENTER);
+                    VBox vBox = new VBox(imageView, label);
+                    grid.add(vBox, j, i);
+                    GridPane.setHalignment(vBox, HPos.CENTER);
                 }
+
+
             }
         }
     }
@@ -90,7 +103,6 @@ public class App extends Application {
     public void positionChanged() {
 
         Platform.runLater(() -> {
-//            System.out.println("position changed");
             grid.getChildren().clear();
             this.updateScene();
         });

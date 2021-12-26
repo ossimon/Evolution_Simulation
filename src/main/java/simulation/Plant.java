@@ -6,7 +6,7 @@ import javafx.scene.image.ImageView;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-public class Plant implements IMapElement {
+public class Plant implements IMapElement, Comparable {
 
     private Vector2d position;
     private ImageView imageView;
@@ -19,22 +19,27 @@ public class Plant implements IMapElement {
     @Override
     public ImageView getImageView() {
 
-
         Image image = null;
         try {
-            image = new Image(new FileInputStream("src/main/resources/grass.png"));
+            image = new Image(new FileInputStream("src/main/resources/plant.png"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         imageView = new ImageView(image);
 
-        imageView.setFitWidth(40);
-        imageView.setFitHeight(40);
+        imageView.setFitWidth(60);
+        imageView.setFitHeight(60);
 
         return imageView;
     }
 
     public Vector2d getPosition() {
         return this.position;
+    }
+
+    @Override
+    public int compareTo(Object other) {
+
+        return this.position.compareTo(((Plant) other).position);
     }
 }

@@ -24,7 +24,6 @@ public class Animal implements IMapElement{
         this.map = map;
         this.position = position;
         this.genotype = new Genotype();
-//        System.out.println(genotype);
         this.energy = energy;
     }
 
@@ -33,7 +32,6 @@ public class Animal implements IMapElement{
         this.map = map;
         this.position = position;
         this.genotype = genotype;
-//        System.out.println(genotype);
         this.energy = energy;
     }
 
@@ -50,7 +48,7 @@ public class Animal implements IMapElement{
         return child;
     }
 
-    public void move() {
+    public void move(int moveEnergy) {
         Random rng = new Random();
         int moveIndex = rng.nextInt(32);
         int move = genotype.getGenes()[moveIndex];
@@ -82,6 +80,8 @@ public class Animal implements IMapElement{
             case 6 -> direction = direction.previous().previous();
             case 7 -> direction = direction.previous().previous().previous();
         }
+
+        this.energy -= moveEnergy;
     }
 
     @Override
@@ -126,6 +126,10 @@ public class Animal implements IMapElement{
     public boolean exhausted(int exhaustion) {
         energy -= exhaustion;
         return energy <= 0;
+    }
+
+    public void feed(int energy) {
+        this.energy += energy;
     }
 
     private void positionChanged(Vector2d oldPosition, Vector2d newPosition){
