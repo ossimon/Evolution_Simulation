@@ -10,8 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Animal implements IMapElement{
+public class Animal implements IMapElement {
 
+    private long ID;
     private Vector2d position;
     private MapDirection direction;
     private ImageView imageView;
@@ -19,7 +20,8 @@ public class Animal implements IMapElement{
     private int energy;
     private Genotype genotype;
 
-    public Animal(WorldMap map, Vector2d position, int energy) {
+    public Animal(WorldMap map, Vector2d position, int energy, long animalID) {
+        this.ID = animalID;
         this.direction = MapDirection.randomDirection();
         this.map = map;
         this.position = position;
@@ -50,7 +52,7 @@ public class Animal implements IMapElement{
 
     public void move(int moveEnergy) {
         Random rng = new Random();
-        int moveIndex = rng.nextInt(32);
+        int moveIndex = rng.nextInt(32 );
         int move = genotype.getGenes()[moveIndex];
 
         Vector2d newPosition;
@@ -140,4 +142,11 @@ public class Animal implements IMapElement{
         map.positionChanged(this, oldPosition, newPosition);
     }
 
+//    @Override
+//    public int compareTo(Animal other) {
+//
+//        if (this.getEnergy() > other.getEnergy()) {
+//
+//        }
+//    }
 }

@@ -15,19 +15,14 @@ public class ImageViewGetter {
 
     private final WorldMap map;
     private final Image[] images;
+    private final int cellWidth;
+    private final int cellHeight;
 
-//    private final Image left;
-//    private final Image upLeft;
-//    private final Image up;
-//    private final Image upRight;
-//    private final Image right;
-//    private final Image downRight;
-//    private final Image down;
-//    private final Image downLeft;
-//    private final Image plant;
+    public ImageViewGetter(WorldMap map, int cellWidth, int cellHeight) throws FileNotFoundException {
 
-
-    public ImageViewGetter(WorldMap map) throws FileNotFoundException {
+        this.map = map;
+        this.cellWidth = cellWidth;
+        this.cellHeight = cellHeight;
 
         images = new Image[18];
         String directoryName = "src/main/resources/";
@@ -35,27 +30,16 @@ public class ImageViewGetter {
         String[] terrainNames = {"Swamp", "Jungle"};
         String extensionName = ".png";
 
-        int terrainNumber = terrainNames.length;
+        int i = 0;
 
-        for (int i = 0; i < terrainNumber; i++) {
-            for (int j = 0; j < fileNames.length; j++) {
-                String fileName = directoryName + fileNames[j] + terrainNames[i] + extensionName;
-                images[i * terrainNumber + j] = new Image(
-                        new FileInputStream(fileName));
+        for (String terrainName: terrainNames) {
+            for (String fileName: fileNames) {
+                String fullPath = directoryName + fileName + terrainName + extensionName;
+                System.out.println(fullPath);
+                images[i] = new Image(new FileInputStream(fullPath));
+                i += 1;
             }
         }
-
-//        this.left = new Image(new FileInputStream("src/main/resources/left.png"));
-//        this.upLeft = new Image(new FileInputStream("src/main/resources/upleft.png"));
-//        this.up = new Image(new FileInputStream("src/main/resources/up.png"));
-//        this.upRight = new Image(new FileInputStream("src/main/resources/upright.png"));
-//        this.right = new Image(new FileInputStream("src/main/resources/right.png"));
-//        this.downRight = new Image(new FileInputStream("src/main/resources/downright.png"));
-//        this.down = new Image(new FileInputStream("src/main/resources/down.png"));
-//        this.downLeft = new Image(new FileInputStream("src/main/resources/downleft.png"));
-//        this.plant = new Image(new FileInputStream("src/main/resources/plant.png"));
-
-        this.map = map;
     }
 
     public VBox imageAt(Vector2d position, boolean jungle) {
@@ -69,7 +53,7 @@ public class ImageViewGetter {
             return getPlantImageView(jungle);
         }
         else {
-            return new VBox();
+            return getBackgroundImageView(jungle);
         }
     }
 
@@ -104,8 +88,8 @@ public class ImageViewGetter {
         image = images[imageIndex];
 
         ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(50);
-        imageView.setFitHeight(50);
+        imageView.setFitWidth(cellWidth);
+        imageView.setFitHeight(cellHeight);
 
         double energyPercentage = energy / 1000;
         if (energyPercentage > 1.0) energyPercentage = 1.0;
@@ -115,10 +99,10 @@ public class ImageViewGetter {
         double green = 0.0 + energyPercentage;
 
         Color color = new Color(red, green, 0, 1);
-        Rectangle rectangle = new Rectangle(5 + 45 * energyPercentage, 10, color);
+        Rectangle rectangle = new Rectangle(cellWidth * energyPercentage, cellHeight * 0.16, color);
 
         Color backgroundColor = Color.BLACK;
-        Rectangle backgroundRectangle = new Rectangle(50 - 5 - 45 * energyPercentage, 10, backgroundColor);
+        Rectangle backgroundRectangle = new Rectangle(cellWidth * (1.0 - energyPercentage), cellHeight * 0.16, backgroundColor);
 
         HBox hBox = new HBox(rectangle, backgroundRectangle);
 
@@ -136,9 +120,32 @@ public class ImageViewGetter {
         }
 
         ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(50);
-        imageView.setFitHeight(50);
+        imageView.setFitWidth(cellWidth);
+        imageView.setFitHeight(cellHeight);
 
-        return new VBox(imageView);
+        Color color;
+        if (jungle) {
+            color = new Color(0.768, 1.0, 0.055, 1.0);
+        }
+        else {
+            color = new Color(0.822, 0.542, 0.382, 1.0);
+        }
+
+        Rectangle rectangle = new Rectangle(cellWidth, cellHeight * 0.16, color);
+        return new VBox(imageView, rectangle);
+    }
+
+    private VBox getBackgroundImageView(boolean jungle) {
+
+        Color color;
+        if (jungle) {
+            color = new Color(0.768, 1.0, 0.055, 1.0);
+        }
+        else {
+            color = new Color(0.822, 0.542, 0.382, 1.0);
+        }
+
+        Rectangle rectangle = new Rectangle(cellWidth, cellHeight * 1.16, color);
+        return new VBox(rectangle);
     }
 }

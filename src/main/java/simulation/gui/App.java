@@ -15,6 +15,7 @@ import javafx.stage.WindowEvent;
 import simulation.*;
 
 import java.io.FileNotFoundException;
+import java.util.List;
 
 
 public class App extends Application {
@@ -23,9 +24,11 @@ public class App extends Application {
     private SimulationEngine engine;
     private ImageViewGetter imageViewGetter;
     private GridPane grid;
+    private final int mapWidth = 600;
+    private final int mapHeight = (int) (600.0 * 0.86);
     private final int height = 12;
-    private final int width = 15;
-    private int plantEnergy = 1000;
+    private final int width = 12;
+    private int plantEnergy = 100;
 
 
     @Override
@@ -36,12 +39,12 @@ public class App extends Application {
 
         this.updateScene();
 
-        for (int i = 0; i < width; i++) grid.getColumnConstraints().add(new ColumnConstraints(50));
-        for (int i = 0; i < height; i++) grid.getRowConstraints().add(new RowConstraints(60));
+        for (int i = 0; i < width; i++) grid.getColumnConstraints().add(new ColumnConstraints(mapWidth / width));
+        for (int i = 0; i < height; i++) grid.getRowConstraints().add(new RowConstraints(mapHeight / height * 1.16));
 
         Scene scene = new Scene(grid, 1200, 800);
 
-
+        primaryStage.setMaximized(true);
         primaryStage.setScene(scene);
         primaryStage.show();
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -61,12 +64,12 @@ public class App extends Application {
 
         map = new WorldMap(width, height, plantEnergy, true);
         try {
-            imageViewGetter = new ImageViewGetter(map);
+            imageViewGetter = new ImageViewGetter(map, mapWidth / width + 1, mapHeight / height + 1);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        Vector2d[] positions = VectorGenerator.generateVectors(new Vector2d(0, 0),
-                        new Vector2d(width - 1, height - 1), 1);
+        List<Vector2d> positions = VectorGenerator.generateVectors(map, new Vector2d(0, 0),
+                        new Vector2d(width - 1, height - 1), 10);
         engine = new SimulationEngine(map, positions, this, 1000, 10);
 
     }
@@ -79,7 +82,7 @@ public class App extends Application {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
 
-                VBox vBox = imageViewGetter.imageAt(new Vector2d(j, i), false);
+                VBox vBox = imageViewGetter.imageAt(new Vector2d(j, i), true);
                 grid.add(vBox, j, i);
                 GridPane.setHalignment(vBox, HPos.CENTER);
             }
