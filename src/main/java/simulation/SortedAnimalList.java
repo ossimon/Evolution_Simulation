@@ -9,21 +9,25 @@ public class SortedAnimalList extends ArrayList<Animal>{
 
         super.add(animal);
 
-        int i = this.size();
+        int i = this.size() - 1;
 
-        if (i > 1) {
-            Animal animal1 = get(i - 1);
-            Animal animal2 = get(i);
-            Animal holder;
+        if (i > 0) {
+            Animal animal1;
+            Animal animal2;
 
-            while (i > 0 && animal1.getEnergy() < animal2.getEnergy()) {
+            while (true) {
 
-                holder = animal1;
-                add(i - 1, animal2);
-                add(i, holder);
-                i--;
                 animal1 = get(i - 1);
                 animal2 = get(i);
+
+                if (animal1.getEnergy() < animal2.getEnergy()) {
+                    add(i - 1, animal2);
+                    add(i, animal1);
+                }
+                else break;
+
+                if (i > 1) i--;
+                else break;
             }
         }
         return true;

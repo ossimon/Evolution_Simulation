@@ -45,7 +45,8 @@ public class SimulationEngine implements Runnable {
 
             if (!pause) {
 //                System.out.println(animals.size());
-//                map.killAnimals(animals);
+                map.killAnimals();
+                System.out.println("Engine: " + animals.size());
                 removeDeadAnimals();
                 moveAnimals();
                 map.feedAnimals();

@@ -10,7 +10,7 @@ public class WorldMap {
     private final Vector2d boundary;
     private final boolean teleport;
     private final int plantEnergy;
-    private final Map<Vector2d, List<Animal>> animals = new HashMap<>();
+    private final Map<Vector2d, SortedAnimalList> animals = new HashMap<>();
     private final Map<Vector2d, Plant> plants = new HashMap<>();
 
     public WorldMap(int width, int height, int plantEnergy, boolean teleport) {
@@ -39,33 +39,15 @@ public class WorldMap {
         }
     }
 
-    private void swapAnimals(List<Animal> animalList, int index1, int index2) {
-        Animal animal1 = animalList.get(index1);
-        Animal animal2 = animalList.get(index2);
-        animalList.add(index1, animal2);
-        animalList.add(index2, animal1);
-    }
-
     public void placeAnimal(Vector2d position, Animal animal) {
 
         if (animals.containsKey(position)) {
 
             List<Animal> animalList = animals.get(position);
             animalList.add(animal);
-
-            int currentIndex = animalList.size() - 1;
-            Animal animal1 = animalList.get(currentIndex - 1);
-            Animal animal2 = animalList.get(currentIndex);
-
-            while (currentIndex > 0 && animal1.getEnergy() < animal2.getEnergy()) {
-                swapAnimals(animalList, currentIndex, currentIndex - 1);
-                currentIndex -= 1;
-                animal1 = animalList.get(currentIndex - 1);
-                animal2 = animalList.get(currentIndex);
-            }
         }
         else {
-            List<Animal> positions = new ArrayList<>();
+            SortedAnimalList positions = new SortedAnimalList();
             positions.add(animal);
             animals.put(position, positions);
         }
@@ -81,6 +63,14 @@ public class WorldMap {
 
     public void feedAnimals() {
 
+        int size = 0;
+        for (Vector2d position: animals.keySet()) {
+            List<Animal> animalList = animals.get(position);
+            size += animalList.size();
+        }
+
+
+        System.out.println("Map: " + size);
         List<Vector2d> plantsEaten = new ArrayList<>();
 
         for (Vector2d position: plants.keySet()) {
@@ -89,7 +79,6 @@ public class WorldMap {
             if (object instanceof Animal) {
                 ((Animal) object).feed(this.plantEnergy);
                 plantsEaten.add(position);
-//                plants.remove(position);
             }
         }
         for(Vector2d position: plantsEaten) {
@@ -133,17 +122,21 @@ public class WorldMap {
                 if (parent1.getEnergy() > 0 && parent2.getEnergy() > 0) {
 
                     Animal newAnimal = parent1.copulateWith(parent2);
-                    this.placeAnimal(position, newAnimal);
-                    engineAnimals.add(newAnimal);
+                    animalList.remove(parent1);
+                    animalList.remove(parent2);
+                    animalList.add(parent1);
+                    animalList.add(parent2);
 
-//                    positionChanged(parent1, position, position);
-//                    positionChanged(parent2, position, position);
+                    if (newAnimal.getEnergy() > 0) {
+                        this.placeAnimal(position, newAnimal);
+                        engineAnimals.add(newAnimal);
+                    }
                 }
             }
         }
     }
 
-    public void killAnimals(List<Animal> engineAnimals) {
+    public void killAnimals() {
 
         List<Animal> animalList;
 
@@ -152,8 +145,7 @@ public class WorldMap {
             animalList = animals.get(pos);
             int i = animalList.size() - 1;
 
-            while (animalList.get(i).getEnergy() <= 0) {
-                engineAnimals.remove(animalList.get(i));
+            while (i >= 0 && animalList.get(i).getEnergy() <= 0) {
                 animalList.remove(i);
                 i -= 1;
             }
