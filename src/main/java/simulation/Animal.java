@@ -119,6 +119,10 @@ public class Animal implements IMapElement{
         return this.position;
     }
 
+    public MapDirection getDirection() {
+        return this.direction;
+    }
+
     public int getEnergy() {
         return this.energy;
     }

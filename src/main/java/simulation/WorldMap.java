@@ -1,6 +1,7 @@
 package simulation;
 
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 
 import java.util.*;
 
@@ -82,6 +83,7 @@ public class WorldMap {
             IMapElement object = this.objectAt(position);
             if (object instanceof Animal) {
                 ((Animal) object).feed(this.plantEnergy);
+//                plants.remove(position);
             }
         }
     }
@@ -116,9 +118,11 @@ public class WorldMap {
             if (animalList.size() > 1) {
                 Animal parent1 = animalList.get(0);
                 Animal parent2 = animalList.get(1);
-                Animal newAnimal = parent1.copulateWith(parent2);
-                this.placeAnimal(pos, newAnimal);
-                engineAnimals.add(newAnimal);
+                if (parent1.getEnergy() > 0 && parent2.getEnergy() > 0) {
+                    Animal newAnimal = parent1.copulateWith(parent2);
+                    this.placeAnimal(pos, newAnimal);
+                    engineAnimals.add(newAnimal);
+                }
             }
         }
     }

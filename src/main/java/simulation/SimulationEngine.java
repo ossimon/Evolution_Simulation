@@ -42,7 +42,8 @@ public class SimulationEngine implements Runnable {
 
             if (!pause) {
 //                System.out.println(animals.size());
-                map.killAnimals(animals);
+//                map.killAnimals(animals);
+                removeDeadAnimals();
                 moveAnimals();
                 map.feedAnimals();
                 map.breedAnimals(animals);
@@ -62,6 +63,21 @@ public class SimulationEngine implements Runnable {
             animal.move(moveEnergy);
         }
         app.positionChanged();
+    }
+
+    private void removeDeadAnimals() {
+
+        int i = 0;
+
+        while (i < animals.size()) {
+            Animal animal = animals.get(i);
+            if (animal.getEnergy() > 0) {
+                i += 1;
+            }
+            else {
+                animals.remove(i);
+            }
+        }
     }
 
     private void feedAnimals() {
