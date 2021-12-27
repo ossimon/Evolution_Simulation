@@ -36,7 +36,7 @@ public class SimulationEngine implements Runnable {
     }
 
     public void run() {
-        int moveDelay = 150;
+        int moveDelay = 500;
 
         while (animals.size() > 0) {
 

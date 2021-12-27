@@ -14,28 +14,46 @@ import java.io.FileNotFoundException;
 public class ImageViewGetter {
 
     private final WorldMap map;
-    private final Image left;
-    private final Image upLeft;
-    private final Image up;
-    private final Image upRight;
-    private final Image right;
-    private final Image downRight;
-    private final Image down;
-    private final Image downLeft;
-    private final Image plant;
+    private final Image[] images;
+
+//    private final Image left;
+//    private final Image upLeft;
+//    private final Image up;
+//    private final Image upRight;
+//    private final Image right;
+//    private final Image downRight;
+//    private final Image down;
+//    private final Image downLeft;
+//    private final Image plant;
 
 
     public ImageViewGetter(WorldMap map) throws FileNotFoundException {
 
-        this.left = new Image(new FileInputStream("src/main/resources/left.png"));
-        this.upLeft = new Image(new FileInputStream("src/main/resources/upleft.png"));
-        this.up = new Image(new FileInputStream("src/main/resources/up.png"));
-        this.upRight = new Image(new FileInputStream("src/main/resources/upright.png"));
-        this.right = new Image(new FileInputStream("src/main/resources/right.png"));
-        this.downRight = new Image(new FileInputStream("src/main/resources/downright.png"));
-        this.down = new Image(new FileInputStream("src/main/resources/down.png"));
-        this.downLeft = new Image(new FileInputStream("src/main/resources/downleft.png"));
-        this.plant = new Image(new FileInputStream("src/main/resources/plant.png"));
+        images = new Image[18];
+        String directoryName = "src/main/resources/";
+        String[] fileNames = {"left", "upLeft", "up", "upRight", "right", "downRight", "down", "downLeft", "plant"};
+        String[] terrainNames = {"Swamp", "Jungle"};
+        String extensionName = ".png";
+
+        int terrainNumber = terrainNames.length;
+
+        for (int i = 0; i < terrainNumber; i++) {
+            for (int j = 0; j < fileNames.length; j++) {
+                String fileName = directoryName + fileNames[j] + terrainNames[i] + extensionName;
+                images[i * terrainNumber + j] = new Image(
+                        new FileInputStream(fileName));
+            }
+        }
+
+//        this.left = new Image(new FileInputStream("src/main/resources/left.png"));
+//        this.upLeft = new Image(new FileInputStream("src/main/resources/upleft.png"));
+//        this.up = new Image(new FileInputStream("src/main/resources/up.png"));
+//        this.upRight = new Image(new FileInputStream("src/main/resources/upright.png"));
+//        this.right = new Image(new FileInputStream("src/main/resources/right.png"));
+//        this.downRight = new Image(new FileInputStream("src/main/resources/downright.png"));
+//        this.down = new Image(new FileInputStream("src/main/resources/down.png"));
+//        this.downLeft = new Image(new FileInputStream("src/main/resources/downleft.png"));
+//        this.plant = new Image(new FileInputStream("src/main/resources/plant.png"));
 
         this.map = map;
     }
@@ -57,16 +75,33 @@ public class ImageViewGetter {
 
     private VBox getAnimalImageView(MapDirection direction, double energy, boolean jungle) {
 
-        Image image = switch (direction) {
-            case NORTH -> up;
-            case NORTHWEST -> upLeft;
-            case NORTHEAST -> upRight;
-            case SOUTH -> down;
-            case SOUTHWEST -> downLeft;
-            case SOUTHEAST -> downRight;
-            case WEST -> left;
-            case EAST -> right;
-        };
+        Image image;
+        int imageIndex;
+        if (!jungle) {
+            imageIndex = switch (direction) {
+                case NORTH -> 2;
+                case NORTHWEST -> 1;
+                case NORTHEAST -> 3;
+                case SOUTH -> 6;
+                case SOUTHWEST -> 7;
+                case SOUTHEAST -> 5;
+                case WEST -> 0;
+                case EAST -> 4;
+            };
+        }
+        else {
+            imageIndex = switch (direction) {
+                case NORTH -> 11;
+                case NORTHWEST -> 10;
+                case NORTHEAST -> 12;
+                case SOUTH -> 15;
+                case SOUTHWEST -> 16;
+                case SOUTHEAST -> 14;
+                case WEST -> 9;
+                case EAST -> 13;
+            };
+        }
+        image = images[imageIndex];
 
         ImageView imageView = new ImageView(image);
         imageView.setFitWidth(50);
@@ -83,12 +118,6 @@ public class ImageViewGetter {
         Rectangle rectangle = new Rectangle(5 + 45 * energyPercentage, 10, color);
 
         Color backgroundColor = Color.BLACK;
-//        if (jungle) {
-//            backgroundColor = new Color(0.725, 0.478, 0.337, 1.0);
-//        }
-//        else {
-//            backgroundColor = new Color(0.768, 1.0, 0.054, 1.0);
-//        }
         Rectangle backgroundRectangle = new Rectangle(50 - 5 - 45 * energyPercentage, 10, backgroundColor);
 
         HBox hBox = new HBox(rectangle, backgroundRectangle);
@@ -98,7 +127,15 @@ public class ImageViewGetter {
 
     private VBox getPlantImageView(boolean jungle) {
 
-        ImageView imageView = new ImageView(plant);
+        Image image;
+        if (jungle) {
+            image = images[17];
+        }
+        else {
+            image = images[8];
+        }
+
+        ImageView imageView = new ImageView(image);
         imageView.setFitWidth(50);
         imageView.setFitHeight(50);
 

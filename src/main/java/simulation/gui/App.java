@@ -23,7 +23,7 @@ public class App extends Application {
     private SimulationEngine engine;
     private ImageViewGetter imageViewGetter;
     private GridPane grid;
-    private final int height = 15;
+    private final int height = 12;
     private final int width = 15;
     private int plantEnergy = 1000;
 
@@ -66,7 +66,7 @@ public class App extends Application {
             e.printStackTrace();
         }
         Vector2d[] positions = VectorGenerator.generateVectors(new Vector2d(0, 0),
-                        new Vector2d(width - 1, height - 1), 10);
+                        new Vector2d(width - 1, height - 1), 1);
         engine = new SimulationEngine(map, positions, this, 1000, 10);
 
     }
@@ -79,7 +79,7 @@ public class App extends Application {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
 
-                VBox vBox = imageViewGetter.imageAt(new Vector2d(j, i), true);
+                VBox vBox = imageViewGetter.imageAt(new Vector2d(j, i), false);
                 grid.add(vBox, j, i);
                 GridPane.setHalignment(vBox, HPos.CENTER);
             }

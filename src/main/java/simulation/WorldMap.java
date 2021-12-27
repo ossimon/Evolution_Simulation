@@ -73,7 +73,7 @@ public class WorldMap {
 
             plants.put(grassPos, new Plant(grassPos));
         }
-        System.out.println(plants.keySet());
+//        System.out.println(plants.keySet());
     }
 
     public void feedAnimals() {
