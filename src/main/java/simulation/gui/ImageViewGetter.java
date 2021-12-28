@@ -13,16 +13,12 @@ import java.io.FileNotFoundException;
 
 public class ImageViewGetter {
 
-    private final WorldMap map;
     private final Image[] images;
-    private final int cellWidth;
-    private final int cellHeight;
+    private final int cellSize;
 
-    public ImageViewGetter(WorldMap map, int cellWidth, int cellHeight) throws FileNotFoundException {
+    public ImageViewGetter(int cellSize) throws FileNotFoundException {
 
-        this.map = map;
-        this.cellWidth = cellWidth;
-        this.cellHeight = cellHeight;
+        this.cellSize = cellSize;
 
         images = new Image[18];
         String directoryName = "src/main/resources/";
@@ -41,7 +37,7 @@ public class ImageViewGetter {
         }
     }
 
-    public VBox imageAt(Vector2d position, boolean jungle) {
+    public VBox imageAt(Vector2d position, WorldMap map, boolean jungle) {
 
         IMapElement element = map.objectAt(position);
 
@@ -87,8 +83,8 @@ public class ImageViewGetter {
         image = images[imageIndex];
 
         ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(cellWidth);
-        imageView.setFitHeight(cellHeight);
+        imageView.setFitWidth(cellSize);
+        imageView.setFitHeight(cellSize);
 
         double energyPercentage = energy / 1000;
         if (energyPercentage > 1.0) energyPercentage = 1.0;
@@ -98,10 +94,10 @@ public class ImageViewGetter {
         double green = 0.0 + energyPercentage;
 
         Color color = new Color(red, green, 0, 1);
-        Rectangle rectangle = new Rectangle(cellWidth * energyPercentage, cellHeight * 0.16, color);
+        Rectangle rectangle = new Rectangle(cellSize * energyPercentage, cellSize * 0.16, color);
 
         Color backgroundColor = Color.BLACK;
-        Rectangle backgroundRectangle = new Rectangle(cellWidth * (1.0 - energyPercentage), cellHeight * 0.16, backgroundColor);
+        Rectangle backgroundRectangle = new Rectangle(cellSize * (1.0 - energyPercentage), cellSize * 0.16, backgroundColor);
 
         HBox hBox = new HBox(rectangle, backgroundRectangle);
 
@@ -119,8 +115,8 @@ public class ImageViewGetter {
         }
 
         ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(cellWidth);
-        imageView.setFitHeight(cellHeight);
+        imageView.setFitWidth(cellSize);
+        imageView.setFitHeight(cellSize);
 
         Color color;
         if (jungle) {
@@ -130,7 +126,8 @@ public class ImageViewGetter {
             color = new Color(0.822, 0.542, 0.382, 1.0);
         }
 
-        Rectangle rectangle = new Rectangle(cellWidth, cellHeight * 0.16, color);
+        Rectangle rectangle = new Rectangle(cellSize, cellSize * 0.16, color);
+        rectangle.setY(-33);
         return new VBox(imageView, rectangle);
     }
 
@@ -144,7 +141,7 @@ public class ImageViewGetter {
             color = new Color(0.822, 0.542, 0.382, 1.0);
         }
 
-        Rectangle rectangle = new Rectangle(cellWidth, cellHeight * 1.16, color);
+        Rectangle rectangle = new Rectangle(cellSize, cellSize * 1.16, color);
         return new VBox(rectangle);
     }
 }

@@ -1,8 +1,5 @@
 package simulation;
 
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.VBox;
-
 import java.util.*;
 
 public class WorldMap {
@@ -10,15 +7,16 @@ public class WorldMap {
     private final Vector2d boundary;
     private final boolean teleport;
     private final int plantEnergy;
+    private final int copulatingEnergy;
     private final Map<Vector2d, SortedAnimalList> animals = new HashMap<>();
     private final Map<Vector2d, Plant> plants = new HashMap<>();
 
-    public WorldMap(int width, int height, int plantEnergy, boolean teleport) {
-        this.plantEnergy = plantEnergy;
-        this.boundary = new Vector2d(width - 1, height - 1);
+    public WorldMap(int[] args, boolean teleport) {
+        this.copulatingEnergy = args[3] / 2;
+        this.plantEnergy = args[5];
+        this.boundary = new Vector2d(args[0] - 1, args[1] - 1);
         this.teleport = teleport;
     }
-
 
     public void positionChanged(Animal animal, Vector2d oldPosition, Vector2d newPosition) {
         removeAnimal(oldPosition, animal);
@@ -62,12 +60,6 @@ public class WorldMap {
     }
 
     public void feedAnimals() {
-
-        int size = 0;
-        for (Vector2d position: animals.keySet()) {
-            List<Animal> animalList = animals.get(position);
-            size += animalList.size();
-        }
 
         List<Vector2d> plantsEaten = new ArrayList<>();
 
@@ -121,7 +113,7 @@ public class WorldMap {
                 Animal parent1 = animalList.get(0);
                 Animal parent2 = animalList.get(1);
 
-                if (parent1.getEnergy() > 0 && parent2.getEnergy() > 0) {
+                if (parent1.getEnergy() >= copulatingEnergy && parent2.getEnergy() >= copulatingEnergy) {
 
                     Animal newAnimal = parent1.copulateWith(parent2);
                     animalList.remove(parent1);

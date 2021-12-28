@@ -1,5 +1,6 @@
 package simulation;
 
+import javafx.scene.layout.GridPane;
 import simulation.gui.App;
 
 import java.util.ArrayList;
@@ -13,38 +14,32 @@ public class SimulationEngine implements Runnable {
     private final List<Animal> animals = new ArrayList<>();
     private boolean pause = false;
     private final int moveEnergy;
+    private final GridPane grid;
+    private final int moveDelay;
 
 
-    public SimulationEngine(WorldMap map, List<Vector2d> positions, App app, int startEnergy, int moveEnergy){
+    public SimulationEngine(int[] args, List<Vector2d> positions, WorldMap map, App app, GridPane grid) {
 
         this.map = map;
         this.app = app;
-        this.moveEnergy = moveEnergy;
+        this.moveEnergy = args[4];
+        this.grid = grid;
+        this.moveDelay = args[7];
 
         for(Vector2d pos: positions){
-            Animal animal = new Animal(map, pos, startEnergy);
+            Animal animal = new Animal(map, pos, args[3]);
             map.placeAnimal(animal.getPosition(), animal);
             animals.add(animal);
         }
-    }
 
-    public void pause() {
-        pause = true;
-    }
 
-    public void resume() {
-        pause = false;
     }
 
     public void run() {
-        int moveDelay = 150;
 
         while (animals.size() > 0) {
 
             if (!pause) {
-//                System.out.println(animals.size());
-//                map.killAnimals();
-//                System.out.println("Engine: " + animals.size());
                 removeDeadAnimals();
                 moveAnimals();
                 map.feedAnimals();
@@ -65,7 +60,7 @@ public class SimulationEngine implements Runnable {
         for(Animal animal: animals) {
             animal.move(moveEnergy);
         }
-        app.positionChanged();
+        app.positionChanged(grid, map);
     }
 
     private void removeDeadAnimals() {
@@ -82,15 +77,5 @@ public class SimulationEngine implements Runnable {
                 animals.remove(i);
             }
         }
-    }
-
-    private void feedAnimals() {
-
-    }
-    private void reproduceAnimals() {
-
-    }
-    private void growPlants() {
-
     }
 }
