@@ -12,12 +12,9 @@
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/simulation/WorldMap.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/simulation/WorldMap.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/simulation/SimulationEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulation/SimulationEngine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/simulation/WorldFreeSpace.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/simulation/VectorGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulation/VectorGenerator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/simulation/WorldMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulation/WorldMap.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/simulation/gui/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulation/gui/App.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/simulation/gui/ImageViewGetter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulation/gui/ImageViewGetter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/simulation/SortedAnimalListTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/simulation/SortedAnimalListTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

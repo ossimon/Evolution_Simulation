@@ -5,6 +5,8 @@ import java.util.*;
 public class WorldMap {
 
     private final Vector2d boundary;
+    private final Vector2d jungleBoundary1;
+    private final Vector2d jungleBoundary2;
     private final boolean teleport;
     private final int plantEnergy;
     private final int copulatingEnergy;
@@ -12,13 +14,20 @@ public class WorldMap {
     private final Map<Vector2d, Plant> plants = new HashMap<>();
 
     public WorldMap(int[] args, boolean teleport) {
+
         this.copulatingEnergy = args[3] / 2;
         this.plantEnergy = args[5];
         this.boundary = new Vector2d(args[0] - 1, args[1] - 1);
         this.teleport = teleport;
+
+        double swampRatio = (100. - args[2]) / 100.;
+        jungleBoundary1 = new Vector2d((int) (boundary.x / 2 * swampRatio), (int) (boundary.y / 2 * swampRatio));
+        jungleBoundary2 = new Vector2d(boundary.x - (int) (boundary.x / 2 * swampRatio),
+                boundary.y - (int) (boundary.y / 2* swampRatio));
     }
 
     public void positionChanged(Animal animal, Vector2d oldPosition, Vector2d newPosition) {
+
         removeAnimal(oldPosition, animal);
         placeAnimal(newPosition, animal);
     }
@@ -52,7 +61,18 @@ public class WorldMap {
     }
 
     public void growPlants() {
-        List<Vector2d> destination = VectorGenerator.generateVectors(this, new Vector2d(0, 0), boundary, 1);
+
+        List<Vector2d> destination = VectorGenerator.generateVectors(this, new Vector2d(0, 0),
+                boundary, 1, true);
+
+        if (destination.size() > 0) {
+            Vector2d position = destination.get(0);
+            plants.put(position, new Plant(position));
+        }
+
+        destination = VectorGenerator.generateVectors(this, jungleBoundary1,
+                jungleBoundary2, 1, false);
+
         if (destination.size() > 0) {
             Vector2d position = destination.get(0);
             plants.put(position, new Plant(position));
@@ -88,10 +108,7 @@ public class WorldMap {
 
         if (animals.containsKey(position)) {
 
-            if (!animals.get(position).remove(animal)) {
-                System.out.println(animals.get(position) + "\t" + animal);
-//                System.out.println(animal.getEnergy() + "<<<<<<<<<<<<<<<<<< tutaj!!!");
-            }
+            animals.get(position).remove(animal);
 
             if (animals.get(position).size() == 0) {
                 animals.remove(position);
@@ -130,19 +147,8 @@ public class WorldMap {
         }
     }
 
-    public void killAnimals() {
+    public boolean isJungle(Vector2d position) {
 
-        List<Animal> animalList;
-
-        for (Vector2d pos : animals.keySet()) {
-
-            animalList = animals.get(pos);
-            int i = animalList.size() - 1;
-
-            while (i >= 0 && animalList.get(i).getEnergy() <= 0) {
-                animalList.remove(i);
-                i -= 1;
-            }
-        }
+        return position.follows(jungleBoundary1) && position.precedes(jungleBoundary2);
     }
 }

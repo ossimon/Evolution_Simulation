@@ -166,7 +166,7 @@ public class App extends Application {
             e.printStackTrace();
         }
         List<Vector2d> positions = VectorGenerator.generateVectors(map, new Vector2d(0, 0),
-                new Vector2d(width - 1, height - 1), 10);
+                new Vector2d(width - 1, height - 1), 10, false);
 
         SimulationEngine engine = new SimulationEngine(args, positions, map, this, grid);
 
@@ -184,7 +184,10 @@ public class App extends Application {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
 
-                VBox vBox = imageViewGetter.imageAt(new Vector2d(j, i), map, true);
+                Vector2d position = new Vector2d(j, i);
+                boolean isJungle = map.isJungle(position);
+
+                VBox vBox = imageViewGetter.imageAt(position, map, isJungle);
                 grid.add(vBox, j, i);
                 GridPane.setHalignment(vBox, HPos.CENTER);
             }

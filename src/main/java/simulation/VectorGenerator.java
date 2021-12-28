@@ -6,7 +6,8 @@ import java.util.Random;
 
 public class VectorGenerator {
 
-    public static List<Vector2d> generateVectors(WorldMap map, Vector2d startBoundary, Vector2d endBoundary, int amount) {
+    public static List<Vector2d> generateVectors(WorldMap map, Vector2d startBoundary, Vector2d endBoundary,
+                                                 int amount, boolean avoidJungle) {
 
         Vector2d position;
         Random rng = new Random();
@@ -16,6 +17,9 @@ public class VectorGenerator {
             for (int y = startBoundary.y; y <= endBoundary.y; y++) {
 
                 position = new Vector2d(x, y);
+
+                if (avoidJungle && map.isJungle(position)) continue;
+
                 if (map.objectAt(position) == null) {
                     emptyCells.add(position);
                 }
