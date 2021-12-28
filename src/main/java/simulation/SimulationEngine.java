@@ -5,7 +5,6 @@ import javafx.scene.layout.VBox;
 import simulation.gui.App;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 
@@ -14,14 +13,13 @@ public class SimulationEngine implements Runnable {
     private final App app;
     private final WorldMap map;
     private final List<Animal> animals = new ArrayList<>();
-    private boolean pause = false;
     private final int moveEnergy;
     private final GridPane grid;
     private final int moveDelay;
     private int day;
     private double averageLifespan;
     private long numberOfAllAnimals;
-    private VBox statistics;
+    private final VBox statistics;
 
     public SimulationEngine(int[] args, List<Vector2d> positions, WorldMap map, App app, GridPane grid, VBox statistics) {
 
@@ -53,15 +51,13 @@ public class SimulationEngine implements Runnable {
 
         while (animals.size() > 0) {
 
-            if (!pause) {
-                day += 1;
-                removeDeadAnimals();
-                moveAnimals();
-                map.feedAnimals();
-                removeDeadAnimals();
-                map.breedAnimals(this, day);
-                map.growPlants();
-            }
+            day += 1;
+            removeDeadAnimals();
+            moveAnimals();
+            map.feedAnimals();
+            removeDeadAnimals();
+            map.breedAnimals(this, day);
+            map.growPlants();
 
             try {
                 Thread.sleep(moveDelay);
@@ -69,14 +65,6 @@ public class SimulationEngine implements Runnable {
                 e.printStackTrace();
             }
         }
-    }
-
-    public void pause() {
-        this.pause = true;
-    }
-
-    public void resume() {
-        this.pause = false;
     }
 
     private void moveAnimals() {

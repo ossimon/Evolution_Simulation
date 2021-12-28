@@ -2,19 +2,13 @@ package simulation.gui;
 
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.geometry.HPos;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
-import javafx.stage.WindowEvent;
 import simulation.*;
 
 import java.io.FileNotFoundException;
@@ -36,7 +30,7 @@ public class App extends Application {
 
 
     @Override
-    public void start(Stage primaryStage) throws FileNotFoundException {
+    public void start(Stage primaryStage) {
 
         grid1 = new GridPane();
         grid2 = new GridPane();
@@ -55,12 +49,9 @@ public class App extends Application {
         primaryStage.setMaximized(true);
         primaryStage.setScene(scene);
         primaryStage.show();
-        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent e) {
-                Platform.exit();
-                System.exit(0);
-            }
+        primaryStage.setOnCloseRequest(e -> {
+            Platform.exit();
+            System.exit(0);
         });
     }
 

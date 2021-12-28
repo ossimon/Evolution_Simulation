@@ -1,15 +1,8 @@
 package simulation;
 
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-
 public class Plant implements IMapElement, Comparable {
 
-    private Vector2d position;
-    private ImageView imageView;
+    private final Vector2d position;
 
     public Plant (Vector2d position) {
 

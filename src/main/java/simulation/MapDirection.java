@@ -3,6 +3,7 @@ package simulation;
 import java.util.Random;
 
 public enum MapDirection {
+
     NORTH,
     NORTHWEST,
     NORTHEAST,
@@ -29,7 +30,9 @@ public enum MapDirection {
             default -> throw new IllegalStateException("Unexpected value: " + dir);
         };
     }
+
     public String toString(){
+
         return switch (this) {
             case NORTH -> "Północ";
             case NORTHEAST -> "Północny Wschód";
@@ -41,7 +44,9 @@ public enum MapDirection {
             case EAST -> "Wschód";
         };
     }
+
     public MapDirection next(){
+
         return switch (this){
             case NORTH -> NORTHEAST;
             case NORTHEAST -> EAST;
@@ -53,7 +58,9 @@ public enum MapDirection {
             case NORTHWEST -> NORTH;
         };
     }
+
     public MapDirection previous(){
+
         return switch (this){
             case NORTH -> NORTHWEST;
             case NORTHEAST -> NORTH;
@@ -65,7 +72,9 @@ public enum MapDirection {
             case NORTHWEST -> WEST;
         };
     }
+
     public Vector2d toUnitVector(){
+
         return switch (this) {
             case NORTH -> new Vector2d(0, -1);
             case NORTHEAST -> new Vector2d(1, -1);

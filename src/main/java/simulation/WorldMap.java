@@ -26,30 +26,6 @@ public class WorldMap {
                 boundary.y - (int) (boundary.y / 2* swampRatio));
     }
 
-    public void positionChanged(Animal animal, Vector2d oldPosition, Vector2d newPosition) {
-
-        removeAnimal(oldPosition, animal);
-        placeAnimal(newPosition, animal);
-    }
-
-    public int getNumberOfPlants() {
-        return this.plants.size();
-    }
-
-    public Vector2d resultDestination (Vector2d oldPosition, Vector2d newPosition) {
-
-        if (newPosition.follows(new Vector2d(0, 0)) && newPosition.precedes(boundary)) {
-            return newPosition;
-        }
-        else if (teleport) {
-            newPosition = newPosition.within(boundary);
-            return newPosition;
-        }
-        else {
-            return oldPosition;
-        }
-    }
-
     public void placeAnimal(Vector2d position, Animal animal) {
 
         if (animals.containsKey(position)) {
@@ -62,6 +38,37 @@ public class WorldMap {
             positions.add(animal);
             animals.put(position, positions);
         }
+    }
+
+    public void removeAnimal(Vector2d position, Animal animal) {
+
+        if (animals.containsKey(position)) {
+
+            animals.get(position).remove(animal);
+
+            if (animals.get(position).size() == 0) {
+                animals.remove(position);
+            }
+        }
+
+    }
+
+    public IMapElement objectAt(Vector2d position){
+
+        if (animals.containsKey(position) && !animals.get(position).isEmpty()) {
+            return animals.get(position).get(0);
+        }
+        return plants.get(position);
+    }
+
+    public void positionChanged(Animal animal, Vector2d oldPosition, Vector2d newPosition) {
+
+        removeAnimal(oldPosition, animal);
+        placeAnimal(newPosition, animal);
+    }
+
+    public int getNumberOfPlants() {
+        return this.plants.size();
     }
 
     public void growPlants() {
@@ -100,27 +107,6 @@ public class WorldMap {
         }
     }
 
-    public IMapElement objectAt(Vector2d position){
-
-        if (animals.containsKey(position) && !animals.get(position).isEmpty()) {
-            return animals.get(position).get(0);
-        }
-        return plants.get(position);
-    }
-
-    public void removeAnimal(Vector2d position, Animal animal) {
-
-        if (animals.containsKey(position)) {
-
-            animals.get(position).remove(animal);
-
-            if (animals.get(position).size() == 0) {
-                animals.remove(position);
-            }
-        }
-
-    }
-
     public void breedAnimals(SimulationEngine engine, int day) {
 
         List<Animal> animalList;
@@ -146,6 +132,20 @@ public class WorldMap {
                     engine.addAnimal(newAnimal);
                 }
             }
+        }
+    }
+
+    public Vector2d resultDestination (Vector2d oldPosition, Vector2d newPosition) {
+
+        if (newPosition.follows(new Vector2d(0, 0)) && newPosition.precedes(boundary)) {
+            return newPosition;
+        }
+        else if (teleport) {
+            newPosition = newPosition.within(boundary);
+            return newPosition;
+        }
+        else {
+            return oldPosition;
         }
     }
 

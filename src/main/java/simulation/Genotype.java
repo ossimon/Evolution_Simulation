@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class Genotype {
 
-    private int[] genes = new int[32];
+    private final int[] genes = new int[32];
 
     public Genotype() {
 

@@ -35,10 +35,9 @@ public class Vector2d implements Comparable {
     public boolean equals(Object other) {
         if (this == other)
             return true;
-        if (!(other instanceof Vector2d))
+        if (!(other instanceof Vector2d that))
             return false;
 
-        Vector2d that = (Vector2d) other;
         return this.x == that.x && this.y == that.y;
     }
 

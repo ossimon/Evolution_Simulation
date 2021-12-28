@@ -6,12 +6,13 @@ public class Animal implements IMapElement {
 
     private Vector2d position;
     private MapDirection direction;
-    private WorldMap map;
+    private final WorldMap map;
     private int energy;
-    private Genotype genotype;
+    private final Genotype genotype;
     private final int birthDate;
 
     public Animal(WorldMap map, Vector2d position, int energy, int birthDate) {
+
         this.direction = MapDirection.randomDirection();
         this.map = map;
         this.position = position;
@@ -21,6 +22,7 @@ public class Animal implements IMapElement {
     }
 
     public Animal(WorldMap map, Vector2d position, Genotype genotype, int energy, int birthDate) {
+
         this.direction = MapDirection.randomDirection();
         this.map = map;
         this.position = position;
@@ -43,6 +45,7 @@ public class Animal implements IMapElement {
     }
 
     public void move(int moveEnergy) {
+
         Random rng = new Random();
         int moveIndex = rng.nextInt(32 );
         int move = genotype.getGenes()[moveIndex];
@@ -67,7 +70,7 @@ public class Animal implements IMapElement {
                 if (this.position != newPosition) {
                     this.positionChanged(position, newPosition);
                     this.position = newPosition;
-                }
+                    }
                 }
 
             case 5 -> direction = direction.previous();
