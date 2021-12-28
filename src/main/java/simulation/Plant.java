@@ -16,23 +16,6 @@ public class Plant implements IMapElement, Comparable {
         this.position = position;
     }
 
-    @Override
-    public ImageView getImageView() {
-
-        Image image = null;
-        try {
-            image = new Image(new FileInputStream("src/main/resources/plant.png"));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        imageView = new ImageView(image);
-
-        imageView.setFitWidth(60);
-        imageView.setFitHeight(60);
-
-        return imageView;
-    }
-
     public Vector2d getPosition() {
         return this.position;
     }

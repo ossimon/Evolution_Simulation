@@ -12,9 +12,28 @@
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/simulation/WorldMap.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/simulation/WorldMap.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/simulation/VectorGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulation/VectorGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/simulation/Animal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulation/Animal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/simulation/Genotype.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulation/Genotype.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/simulation/IMapElement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulation/IMapElement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/simulation/MapElement.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/simulation/Plant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulation/Plant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/simulation/SimulationEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulation/SimulationEngine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/simulation/Vector2d.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulation/Vector2d.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/simulation/World.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulation/World.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/simulation/WorldMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulation/WorldMap.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/simulation/gui/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulation/gui/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/simulation/gui/ImageViewGetter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulation/gui/ImageViewGetter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/downLeftSwamp.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/downLeftSwamp.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/downRightSwamp.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/downRightSwamp.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/downSwamp.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/downSwamp.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/leftSwamp.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/leftSwamp.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/plantJungle.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plantJungle.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/plantSwamp.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plantSwamp.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/rightSwamp.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/rightSwamp.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/upLeftSwamp.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/upLeftSwamp.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/upRightSwamp.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/upRightSwamp.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/upSwamp.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/upSwamp.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/simulation/SortedAnimalListTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/simulation/SortedAnimalListTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

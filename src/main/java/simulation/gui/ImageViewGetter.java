@@ -1,5 +1,6 @@
 package simulation.gui;
 
+import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -100,8 +101,10 @@ public class ImageViewGetter {
         Rectangle backgroundRectangle = new Rectangle(cellSize * (1.0 - energyPercentage), cellSize * 0.16, backgroundColor);
 
         HBox hBox = new HBox(rectangle, backgroundRectangle);
+        VBox vBox = new VBox(imageView, hBox);
+        vBox.setAlignment(Pos.BOTTOM_CENTER);
 
-        return new VBox(imageView, hBox);
+        return vBox;
     }
 
     private VBox getPlantImageView(boolean jungle) {
@@ -116,19 +119,12 @@ public class ImageViewGetter {
 
         ImageView imageView = new ImageView(image);
         imageView.setFitWidth(cellSize);
-        imageView.setFitHeight(cellSize);
+        imageView.setFitHeight(cellSize * 1.16);
 
-        Color color;
-        if (jungle) {
-            color = new Color(0.768, 1.0, 0.055, 1.0);
-        }
-        else {
-            color = new Color(0.822, 0.542, 0.382, 1.0);
-        }
+        VBox vBox = new VBox(imageView);
+        vBox.setAlignment(Pos.BOTTOM_CENTER);
 
-        Rectangle rectangle = new Rectangle(cellSize, cellSize * 0.16, color);
-        rectangle.setY(-33);
-        return new VBox(imageView, rectangle);
+        return vBox;
     }
 
     private VBox getBackgroundImageView(boolean jungle) {

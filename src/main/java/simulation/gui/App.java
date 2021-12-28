@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -28,22 +29,25 @@ public class App extends Application {
     private GridPane grid2;
     private boolean constraintsSet = false;
     private final int maxMapWidth = 700;
-    private final int maxMapHeight = (int) (350.0 * 0.86);
+    private final int maxMapHeight = (int) (500.0 * 0.86);
+    private SimulationEngine engine1;
+    private SimulationEngine engine2;
+    private VBox statistics;
 
-
-    @Override
-    public void init() {
-
-
-    }
 
     @Override
     public void start(Stage primaryStage) throws FileNotFoundException {
 
         grid1 = new GridPane();
         grid2 = new GridPane();
-        VBox vBox = new VBox(new Label("Unbounded map"), grid1, new Label("Bounded map"), grid2);
-        HBox hBox = new HBox(createMenu(), vBox);
+        VBox map1 = new VBox(new Label("Unbounded map"), grid1);
+        VBox map2 = new VBox(new Label("Bounded map"), grid2);
+        VBox statistics1 = new VBox();
+        VBox statistics2 = new VBox();
+        statistics = new VBox(statistics1, statistics2);
+        HBox maps = new HBox(map1, statistics, map2);
+
+        HBox hBox = new HBox(createMenu(), maps);
 
         Scene scene = new Scene(hBox);
 
@@ -108,6 +112,7 @@ public class App extends Application {
 
         VBox others = new VBox(label8, hBox9, hBox10);
 
+        VBox menu = new VBox(mapProperties, energyProperties, others);
 
         Button startButton = new Button("\tStart!\t");
         startButton.setOnAction(value ->  {
@@ -128,14 +133,18 @@ public class App extends Application {
             if (!constraintsSet) setGridConstraints();
 
             try {
-                runEngine(grid1, true);
-                runEngine(grid2, false);
+                engine1 = runEngine(grid1, true);
+                engine2 = runEngine(grid2, false);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
+
+            menu.getChildren().clear();
         });
 
-        return new VBox(mapProperties, energyProperties, others, startButton);
+        menu.getChildren().add(startButton);
+
+        return menu;
     }
 
     private void setGridConstraints() {
@@ -153,7 +162,7 @@ public class App extends Application {
         constraintsSet = true;
     }
 
-    private void runEngine(GridPane grid, boolean teleport) throws FileNotFoundException {
+    private SimulationEngine runEngine(GridPane grid, boolean teleport) throws FileNotFoundException {
 
         int width = args[0];
         int height = args[1];
@@ -168,12 +177,14 @@ public class App extends Application {
         List<Vector2d> positions = VectorGenerator.generateVectors(map, new Vector2d(0, 0),
                 new Vector2d(width - 1, height - 1), 10, false);
 
-        SimulationEngine engine = new SimulationEngine(args, positions, map, this, grid);
+        SimulationEngine engine = new SimulationEngine(args, positions, map, this, grid, statistics);
 
         this.updateGrid(grid, map);
 
         Thread engineThread = new Thread(engine);
         engineThread.start();
+
+        return engine;
     }
 
     private void updateGrid(GridPane grid, WorldMap map) throws FileNotFoundException {
@@ -194,15 +205,35 @@ public class App extends Application {
         }
     }
 
-    public void positionChanged(GridPane grid, WorldMap map) {
+    private void updateStatistics(VBox statistics) {
+
+        statistics.getChildren().clear();
+        statistics.getChildren().add(getStatistics(engine1, "Unbounded map"));
+        statistics.getChildren().add(getStatistics(engine2, "Bounded map"));
+    }
+
+    public void positionChanged(GridPane grid, WorldMap map, VBox statistics) {
 
         Platform.runLater(() -> {
             grid.getChildren().clear();
             try {
                 this.updateGrid(grid, map);
+                this.updateStatistics(statistics);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
         });
+    }
+
+    private VBox getStatistics(SimulationEngine engine, String name) {
+
+        Label nameLabel = new Label("\n" + name + ":");
+        Label dayLabel = new Label("Day: " + engine.getDay());
+        Label animalLabel = new Label("Number of animals: " + engine.getNumberOfAnimals());
+        Label plantLabel = new Label("Number of plants: " + engine.getNumberOfPlants());
+        Label energyLabel = new Label("Average energy: " + engine.getAverageEnergy());
+        Label lifespanLabel = new Label("Average lifespan: " + (int) engine.getAverageLifespan());
+
+        return new VBox(nameLabel, dayLabel, animalLabel, plantLabel, energyLabel, lifespanLabel);
     }
 }

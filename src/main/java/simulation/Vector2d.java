@@ -69,6 +69,5 @@ public class Vector2d implements Comparable {
         if (this.x > ((Vector2d) other).x) return 1;
         else if (this.x < ((Vector2d) other).x) return 0;
         else return -1;
-
     }
 }

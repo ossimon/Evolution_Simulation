@@ -32,6 +32,10 @@ public class WorldMap {
         placeAnimal(newPosition, animal);
     }
 
+    public int getNumberOfPlants() {
+        return this.plants.size();
+    }
+
     public Vector2d resultDestination (Vector2d oldPosition, Vector2d newPosition) {
 
         if (newPosition.follows(new Vector2d(0, 0)) && newPosition.precedes(boundary)) {
@@ -117,7 +121,7 @@ public class WorldMap {
 
     }
 
-    public void breedAnimals(List<Animal> engineAnimals) {
+    public void breedAnimals(SimulationEngine engine, int day) {
 
         List<Animal> animalList;
 
@@ -132,16 +136,14 @@ public class WorldMap {
 
                 if (parent1.getEnergy() >= copulatingEnergy && parent2.getEnergy() >= copulatingEnergy) {
 
-                    Animal newAnimal = parent1.copulateWith(parent2);
+                    Animal newAnimal = parent1.copulateWith(parent2, day);
                     animalList.remove(parent1);
                     animalList.remove(parent2);
                     animalList.add(parent1);
                     animalList.add(parent2);
 
-                    if (newAnimal.getEnergy() > 0) {
-                        this.placeAnimal(position, newAnimal);
-                        engineAnimals.add(newAnimal);
-                    }
+                    this.placeAnimal(position, newAnimal);
+                    engine.addAnimal(newAnimal);
                 }
             }
         }

@@ -14,13 +14,8 @@ public class Genotype {
         for (int i = 0; i < 32; i++) {
             genes[i] = rng.nextInt(8);
         }
-    }
 
-    public Genotype(int gene) {
-
-        for (int i = 0; i < 32; i++) {
-            genes[i] = gene;
-        }
+        Arrays.sort(genes);
     }
 
     public Genotype(int energy1, int energy2, Genotype genotype1, Genotype genotype2) {

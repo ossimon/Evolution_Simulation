@@ -1,48 +1,41 @@
 package simulation;
 
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import simulation.gui.App;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class Animal implements IMapElement {
 
-    private long ID;
     private Vector2d position;
     private MapDirection direction;
-    private ImageView imageView;
     private WorldMap map;
     private int energy;
     private Genotype genotype;
+    private final int birthDate;
 
-    public Animal(WorldMap map, Vector2d position, int energy) {
+    public Animal(WorldMap map, Vector2d position, int energy, int birthDate) {
         this.direction = MapDirection.randomDirection();
         this.map = map;
         this.position = position;
         this.genotype = new Genotype();
         this.energy = energy;
+        this.birthDate = birthDate;
     }
 
-    public Animal(WorldMap map, Vector2d position, Genotype genotype, int energy) {
+    public Animal(WorldMap map, Vector2d position, Genotype genotype, int energy, int birthDate) {
         this.direction = MapDirection.randomDirection();
         this.map = map;
         this.position = position;
         this.genotype = genotype;
         this.energy = energy;
+        this.birthDate = birthDate;
     }
 
-    public Animal copulateWith(Animal other) {
+    public Animal copulateWith(Animal other, int day) {
 
         int parentEnergy1 = (int) (this.energy * 0.25);
         int parentEnergy2 = (int) (other.energy * 0.25);
         Genotype childGenotype = new Genotype(parentEnergy1, parentEnergy2, this.genotype, other.genotype);
 
-        Animal child = new Animal(this.map, this.position, childGenotype, parentEnergy1 + parentEnergy2);
+        Animal child = new Animal(this.map, this.position, childGenotype, parentEnergy1 + parentEnergy2, day);
         this.energy -= parentEnergy1;
         other.energy -= parentEnergy2;
 
@@ -86,36 +79,6 @@ public class Animal implements IMapElement {
     }
 
     @Override
-    public ImageView getImageView() {
-//        DO POPRAWY !!! MA SIE TWORZYC JEDEN VIEW I MA BYC ZMIENNA KTORA SPRAWDZA,
-//        CZY SIE COS ZMIENILO (JAK NIE TO NIE TWORZYMY NOWEGO)
-        try {
-
-            String fileName = switch (this.direction) {
-                case NORTH -> "src/main/resources/up.png";
-                case NORTHWEST -> "src/main/resources/upleft.png";
-                case NORTHEAST -> "src/main/resources/upright.png";
-                case SOUTH -> "src/main/resources/down.png";
-                case SOUTHWEST -> "src/main/resources/downleft.png";
-                case SOUTHEAST -> "src/main/resources/downright.png";
-                case WEST -> "src/main/resources/left.png";
-                case EAST -> "src/main/resources/right.png";
-            };
-
-            Image image = new Image(new FileInputStream(fileName));
-            imageView = new ImageView(image);
-
-            imageView.setFitWidth(50);
-            imageView.setFitHeight(50);
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        return imageView;
-    }
-
-    @Override
     public Vector2d getPosition() {
         return this.position;
     }
@@ -128,9 +91,8 @@ public class Animal implements IMapElement {
         return this.energy;
     }
 
-    public boolean exhausted(int exhaustion) {
-        energy -= exhaustion;
-        return energy <= 0;
+    public int getBirthDate() {
+        return this.birthDate;
     }
 
     public void feed(int energy) {

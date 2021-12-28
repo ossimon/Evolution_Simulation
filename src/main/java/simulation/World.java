@@ -1,6 +1,5 @@
 package simulation;
 
-
 import javafx.application.Application;
 import simulation.gui.App;
 
@@ -10,5 +9,4 @@ public class World {
 
         Application.launch(App.class, args);
     }
-
 }
