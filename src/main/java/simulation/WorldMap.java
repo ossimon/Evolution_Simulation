@@ -69,8 +69,6 @@ public class WorldMap {
             size += animalList.size();
         }
 
-
-        System.out.println("Map: " + size);
         List<Vector2d> plantsEaten = new ArrayList<>();
 
         for (Vector2d position: plants.keySet()) {
@@ -97,7 +95,11 @@ public class WorldMap {
     public void removeAnimal(Vector2d position, Animal animal) {
 
         if (animals.containsKey(position)) {
-            animals.get(position).remove(animal);
+
+            if (!animals.get(position).remove(animal)) {
+                System.out.println(animals.get(position) + "\t" + animal);
+//                System.out.println(animal.getEnergy() + "<<<<<<<<<<<<<<<<<< tutaj!!!");
+            }
 
             if (animals.get(position).size() == 0) {
                 animals.remove(position);

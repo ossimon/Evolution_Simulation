@@ -8,29 +8,34 @@ public class SortedAnimalList extends ArrayList<Animal>{
     public boolean add(Animal animal) {
 
         super.add(animal);
-
-        int i = this.size() - 1;
-
-        if (i > 0) {
-            Animal animal1;
-            Animal animal2;
-
-            while (true) {
-
-                animal1 = get(i - 1);
-                animal2 = get(i);
-
-                if (animal1.getEnergy() < animal2.getEnergy()) {
-                    add(i - 1, animal2);
-                    add(i, animal1);
-                }
-                else break;
-
-                if (i > 1) i--;
-                else break;
-            }
-        }
+        sortLast();
         return true;
     }
 
+    private void sortLast() {
+
+
+        if (!this.isEmpty()) {
+
+            int lastIndex = this.size() - 1;
+            Animal animal = this.get(lastIndex);
+            int energy = animal.getEnergy();
+            int left = 0;
+            int right = lastIndex;
+            int middle = 0;
+
+            while (left < right) {
+                middle = (left + right) / 2;
+                if (this.get(middle).getEnergy() >= energy) left = middle + 1;
+                else right = middle;
+            }
+
+            if (this.get(middle).getEnergy() <= energy) {
+                this.add(middle, animal);
+            } else {
+                this.add(middle + 1, animal);
+            }
+            remove(lastIndex + 1);
+        }
+    }
 }

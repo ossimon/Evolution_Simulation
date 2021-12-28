@@ -35,7 +35,6 @@ public class ImageViewGetter {
         for (String terrainName: terrainNames) {
             for (String fileName: fileNames) {
                 String fullPath = directoryName + fileName + terrainName + extensionName;
-                System.out.println(fullPath);
                 images[i] = new Image(new FileInputStream(fullPath));
                 i += 1;
             }

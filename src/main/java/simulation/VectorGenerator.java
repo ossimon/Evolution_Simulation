@@ -11,8 +11,6 @@ public class VectorGenerator {
         Vector2d position;
         Random rng = new Random();
         List<Vector2d> emptyCells = new ArrayList<>();
-        System.out.println(startBoundary);
-        System.out.println(endBoundary);
 
         for (int x = startBoundary.x; x <= endBoundary.x; x++) {
             for (int y = startBoundary.y; y <= endBoundary.y; y++) {

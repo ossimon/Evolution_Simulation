@@ -20,8 +20,7 @@ public class Animal implements IMapElement {
     private int energy;
     private Genotype genotype;
 
-    public Animal(WorldMap map, Vector2d position, int energy, long animalID) {
-        this.ID = animalID;
+    public Animal(WorldMap map, Vector2d position, int energy) {
         this.direction = MapDirection.randomDirection();
         this.map = map;
         this.position = position;
@@ -141,12 +140,8 @@ public class Animal implements IMapElement {
     private void positionChanged(Vector2d oldPosition, Vector2d newPosition){
         map.positionChanged(this, oldPosition, newPosition);
     }
-
-//    @Override
-//    public int compareTo(Animal other) {
-//
-//        if (this.getEnergy() > other.getEnergy()) {
-//
-//        }
-//    }
+    @Override
+    public String toString() {
+        return Integer.toString(energy);
+    }
 }

@@ -20,11 +20,9 @@ public class SimulationEngine implements Runnable {
         this.map = map;
         this.app = app;
         this.moveEnergy = moveEnergy;
-        int animalID = 0;
 
         for(Vector2d pos: positions){
-            Animal animal = new Animal(map, pos, startEnergy, animalID);
-            animalID += 1;
+            Animal animal = new Animal(map, pos, startEnergy);
             map.placeAnimal(animal.getPosition(), animal);
             animals.add(animal);
         }
@@ -45,8 +43,8 @@ public class SimulationEngine implements Runnable {
 
             if (!pause) {
 //                System.out.println(animals.size());
-                map.killAnimals();
-                System.out.println("Engine: " + animals.size());
+//                map.killAnimals();
+//                System.out.println("Engine: " + animals.size());
                 removeDeadAnimals();
                 moveAnimals();
                 map.feedAnimals();
