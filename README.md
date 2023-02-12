@@ -1,5 +1,7 @@
 # Evolution_Simulation
 
+This repository contains an evolution simulation created in Java for an OOP course.
+
 ## Co reprezentują obrazki?
 
 - Krokodyle są zwierzętami
